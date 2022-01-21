@@ -37,6 +37,7 @@ export default {
           isSelectedMonth: false,
           isCurrentMonth: this.$dayjs().format("YYYY-MM") === previousDate.format("YYYY-MM"),
           isWeekend: previousDate.weekday() === 6 || previousDate.weekday() === 0 ? true : false,
+          first: index ===1 ? true : false
         });
       }
       list.reverse();

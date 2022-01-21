@@ -4,10 +4,51 @@
     :class="{
       'calendar-day--not-selected': !day.isSelectedMonth,
       'calendar-day--today': isToday,
-      'calendar-day--weekend': day.isWeekend
+      'calendar-day--weekend': day.isWeekend,
     }"
   >
-    <span class="day-text" @click="$router.push({name:'Create'})">{{ label }}</span>
+    <v-col cols="12">
+      <span class="day-text" @click="$router.push({ name: 'Create', query: {date: day.date} })">{{
+        label
+      }}</span>
+    </v-col>
+    <v-col cols="12" class="pa-1">
+      <div class="chip" v-if="day.first" @click="$router.push({name: 'Edit', query: {scheduleId: 1}})">
+        <div class="chip-content">Chip Content</div>
+        <div class="chip-head">C</div>
+      </div>
+    </v-col>
+
+    <v-col cols="12" class="pa-1">
+      <div class="chip" v-if="day.first">
+        <div class="chip-content">Chip Content</div>
+        <div class="chip-head">C</div>
+      </div>
+    </v-col>
+    <v-col cols="12" class="pa-1">
+      <div class="chip" v-if="day.first">
+        <div class="chip-content">Chip Content</div>
+        <div class="chip-head">C</div>
+      </div>
+    </v-col>
+    <v-col cols="12" class="pa-1">
+      <div class="chip" v-if="day.first">
+        <div class="chip-content">Chip Content</div>
+        <div class="chip-head">C</div>
+      </div>
+    </v-col>
+    <v-col cols="12" class="pa-1">
+      <div class="chip" v-if="day.first">
+        <div class="chip-content">Chip Content</div>
+        <div class="chip-head">C</div>
+      </div>
+    </v-col>
+    <v-col cols="12" class="pa-1">
+      <div class="chip" v-if="day.first">
+        <div class="chip-content">Chip Content</div>
+        <div class="chip-head">C</div>
+      </div>
+    </v-col>
   </li>
 </template>
 
@@ -18,27 +59,26 @@ export default {
   props: {
     day: {
       type: Object,
-      required: true
+      required: true,
     },
 
     isCurrentMonth: {
       type: Boolean,
-      default: false
+      default: false,
     },
 
     isToday: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   computed: {
     label() {
       return this.$dayjs(this.day.date).format("D");
-    }
-  }
+    },
+  },
 };
-
 </script>
 
 <style scoped>
@@ -49,13 +89,13 @@ export default {
   background-color: #fff;
   color: black;
   padding: 5px;
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   /* align-items: center; */
 }
 
 .calendar-day > span {
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   align-items: center;
   font-weight: bold;
@@ -78,7 +118,44 @@ export default {
   background-color: var(--grey-800);
 }
 
-.calendar-day--weekend{
- background-color: var(--grey-100);
+.calendar-day--weekend {
+  background-color: var(--grey-100);
+}
+
+.chip {
+  display: inline-flex;
+  flex-direction: row;
+  background-color: #e5e5e5;
+  border: none;
+  cursor: default;
+  height: 18px;
+  outline: none;
+  padding: 0;
+  font-size: 14px;
+  font-color: #333333;
+  font-family: "Open Sans", sans-serif;
+  white-space: nowrap;
+  align-items: center;
+  border-radius: 16px;
+  vertical-align: middle;
+  text-decoration: none;
+  justify-content: center;
+}
+.chip-head {
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  background-color: #32c5d2;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  align-items: center;
+  user-select: none;
+  border-radius: 50%;
+  justify-content: center;
+  width: 18px;
+  color: #fff;
+  height: 18px;
+  font-size: 12px;
+  margin-right: -4px;
 }
 </style>

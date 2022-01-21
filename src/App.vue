@@ -54,7 +54,7 @@ li {
 }
 
 .container{
-  width:auto
+  width:inherit !important;
 }
 
 
