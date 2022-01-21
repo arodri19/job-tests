@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import store from './store'
+import router from './router'
 
 dayjs.extend(weekday)
 dayjs.extend(weekOfYear)
@@ -15,5 +16,6 @@ Vue.config.productionTip = false
 new Vue({
   vuetify,
   store,
+  router,
   render: h => h(App)
 }).$mount('#app')

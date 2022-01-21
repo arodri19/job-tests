@@ -7,7 +7,7 @@
       'calendar-day--weekend': day.isWeekend
     }"
   >
-    <span class="day-text">{{ label }}</span>
+    <span class="day-text" @click="$router.push({name:'Create'})">{{ label }}</span>
   </li>
 </template>
 
@@ -45,19 +45,20 @@ export default {
 .calendar-day {
   position: relative;
   min-height: 100px;
-  font-size: 16px;
+  font-size: 14px;
   background-color: #fff;
-  color: var(--grey-800);
+  color: black;
   padding: 5px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .calendar-day > span {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-weight: bold;
   right: 2px;
   width: var(--day-label-size);
   height: var(--day-label-size);

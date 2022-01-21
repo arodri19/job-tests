@@ -80,8 +80,8 @@ export default {
 <style scoped>
 .calendar-month {
   position: relative;
-  background-color: var(--grey-200);
-  border: solid 1px var(--grey-300);
+  background-color: black;
+  border: solid 2px black;
 }
 
 .day-of-week {
@@ -107,7 +107,7 @@ export default {
   position: relative;
   grid-column-gap: var(--grid-gap);
   grid-row-gap: var(--grid-gap);
-  border-top: solid 1px var(--grey-200);
+  border-top: solid 2px black;
 }
 
 .v-application ul,

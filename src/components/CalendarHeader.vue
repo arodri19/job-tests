@@ -31,9 +31,20 @@ export default {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   background-color: lightgreen;
+  
+  padding-bottom: 0px;
+  padding-top: 0px;
 }
 
 .day-of-week > * {
   text-align: center;
+  font-weight: bold;
+}
+
+.day{
+  border-left: 0px;
+  border-bottom: 0px;
+  border-top: black 1px solid;
+  border-right: black 1px solid;
 }
 </style>

@@ -1,22 +1,20 @@
 <template>
   <v-app>
-    <v-main>
-      <Calendar/>
-    </v-main>
+    <v-container class="max-width-calendar">
+      <v-main>
+        <router-view></router-view>
+      </v-main>
+    </v-container>
   </v-app>
 </template>
 
 <script>
 
-const Calendar = () => import('./components/Calendar');
-
 export default {
   name: 'App',
-
   components: {
-    Calendar,
-  },
 
+  },
   data: () => ({
     //
   }),
@@ -32,7 +30,6 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-
 body {
   font-family: sans-serif;
   font-weight: 100;
@@ -43,19 +40,22 @@ body {
   --grid-gap: 1px;
   --day-label-size: 20px;
 }
-
 ol,
 li {
   padding: 0;
   margin: 0;
   list-style: none;
 }
-
 .calendar-month-header {
   display: flex;
   justify-content: space-between;
   background-color: #fff;
   padding: 10px;
 }
-</style>
 
+.container{
+  width:auto
+}
+
+
+</style>
