@@ -18,6 +18,9 @@ export default {
   data: () => ({
     //
   }),
+  created(){
+    this.$store.dispatch("ChangeDateSelected", this.$dayjs().format("YYYY-MM-DD"));
+  }
 };
 </script>
 

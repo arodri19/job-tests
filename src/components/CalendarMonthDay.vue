@@ -12,40 +12,10 @@
         label
       }}</span>
     </v-col>
-    <v-col cols="12" class="pa-1">
-      <div class="chip" v-if="day.first" @click="$router.push({name: 'Edit', query: {scheduleId: 1}})">
-        <div class="chip-content">Chip Content</div>
-        <div class="chip-head">C</div>
-      </div>
-    </v-col>
 
-    <v-col cols="12" class="pa-1">
-      <div class="chip" v-if="day.first">
-        <div class="chip-content">Chip Content</div>
-        <div class="chip-head">C</div>
-      </div>
-    </v-col>
-    <v-col cols="12" class="pa-1">
-      <div class="chip" v-if="day.first">
-        <div class="chip-content">Chip Content</div>
-        <div class="chip-head">C</div>
-      </div>
-    </v-col>
-    <v-col cols="12" class="pa-1">
-      <div class="chip" v-if="day.first">
-        <div class="chip-content">Chip Content</div>
-        <div class="chip-head">C</div>
-      </div>
-    </v-col>
-    <v-col cols="12" class="pa-1">
-      <div class="chip" v-if="day.first">
-        <div class="chip-content">Chip Content</div>
-        <div class="chip-head">C</div>
-      </div>
-    </v-col>
-    <v-col cols="12" class="pa-1">
-      <div class="chip" v-if="day.first">
-        <div class="chip-content">Chip Content</div>
+    <v-col cols="12" class="pa-1" v-for="reminder in day.reminders" :key="reminder.title">
+      <div class="chip" @click="$router.push({name: 'Edit', params: {reminder}})">
+        <div class="chip-content">{{reminder.title}}</div>
         <div class="chip-head">C</div>
       </div>
     </v-col>
@@ -72,7 +42,6 @@ export default {
       default: false,
     },
   },
-
   computed: {
     label() {
       return this.$dayjs(this.day.date).format("D");

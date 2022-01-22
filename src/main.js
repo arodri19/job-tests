@@ -4,7 +4,7 @@ import vuetify from './plugins/vuetify'
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
-import store from './store'
+import store from './store/index'
 import router from './router'
 
 dayjs.extend(weekday)

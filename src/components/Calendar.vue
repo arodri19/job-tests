@@ -1,11 +1,8 @@
 <template>
   <div class="calendar-month">
     <div class="calendar-month-header">
-      <CalendarMonthYearSelected :date="selectedDate" />
-      <CalendarMonthSelector
-        :actualDate="selectedDate"
-        @dateSelected="dateSelected"
-      />
+      <CalendarMonthYearSelected />
+      <CalendarMonthSelector/>
     </div>
     <CalendarHeader />
     <ol class="days-grid">
@@ -30,15 +27,22 @@ export default {
   },
   data() {
     return {
-      selectedDate: "",
+      
     };
   },
   created(){
     this.selectedDate = this.$dayjs().format("YYYY-MM-DD")
   },
   computed: {
+    selectedDate(){
+      return this.$store.getters.dateSelected
+    },
     days() {
-      return [...this.previousMonth, ...this.selectedMonth, ...this.nextMonth];
+      
+      let listPrevious = this.previousMonth;
+
+      return [...listPrevious, ...this.selectedMonth, ...this.nextMonth]
+      
     },
     previousMonth() {
       let list = [];
@@ -59,6 +63,13 @@ export default {
         });
       }
       list.reverse();
+
+      let listReminders = this.$store.getters.reminders;
+
+      list.map(x =>{
+          x.reminders= listReminders.filter(y=> y.selectedDate == x.date)
+      })
+
       return list;
     },
     selectedMonth() {
@@ -77,6 +88,13 @@ export default {
               : false,
         });
       }
+
+      let listReminders = this.$store.getters.reminders;
+
+      list.map(x =>{
+          x.reminders= listReminders.filter(y=> y.selectedDate == x.date)
+      })
+
       return list;
     },
     nextMonth() {
@@ -98,13 +116,18 @@ export default {
               : false,
         });
       }
+
+      let listReminders = this.$store.getters.reminders;
+
+      list.map(x =>{
+          x.reminders= listReminders.filter(y=> y.selectedDate == x.date)
+      })
+
       return list;
     },
   },
   methods: {
-    dateSelected(dateSelected) {
-      this.selectedDate = dateSelected;
-    },
+    
   },
 };
 </script>
