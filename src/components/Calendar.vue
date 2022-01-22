@@ -1,6 +1,12 @@
 <template>
   <div class="calendar-month">
-    <div class="calendar-month-header"></div>
+    <div class="calendar-month-header">
+      <CalendarMonthYearSelected :date="selectedDate" />
+      <CalendarMonthSelector
+        :actualDate="selectedDate"
+        @dateSelected="dateSelected"
+      />
+    </div>
     <CalendarHeader />
     <ol class="days-grid">
       <CalendarMonthDay v-for="day in days" :day="day" :key="day.date" />
@@ -10,21 +16,29 @@
 <script>
 const CalendarHeader = () => import("./CalendarHeader");
 const CalendarMonthDay = () => import("./CalendarMonthDay");
+const CalendarMonthYearSelected = () =>
+  import("./CalendarMonthYearSelected.vue");
+const CalendarMonthSelector = () => import("./CalendarMonthSelector.vue");
 
 export default {
   name: "CalendarMonth",
   components: {
     CalendarHeader,
     CalendarMonthDay,
+    CalendarMonthYearSelected,
+    CalendarMonthSelector,
   },
   data() {
     return {
-      selectedDate: "2021-09-02",
+      selectedDate: "",
     };
+  },
+  created(){
+    this.selectedDate = this.$dayjs().format("YYYY-MM-DD")
   },
   computed: {
     days() {
-      return [...this.previousMonth, ...this.selectedMonth, ...this.nextMonth];      
+      return [...this.previousMonth, ...this.selectedMonth, ...this.nextMonth];
     },
     previousMonth() {
       let list = [];
@@ -35,9 +49,13 @@ export default {
         list.push({
           date: previousDate.format("YYYY-MM-DD"),
           isSelectedMonth: false,
-          isCurrentMonth: this.$dayjs().format("YYYY-MM") === previousDate.format("YYYY-MM"),
-          isWeekend: previousDate.weekday() === 6 || previousDate.weekday() === 0 ? true : false,
-          first: index ===1 ? true : false
+          isCurrentMonth:
+            this.$dayjs().format("YYYY-MM") === previousDate.format("YYYY-MM"),
+          isWeekend:
+            previousDate.weekday() === 6 || previousDate.weekday() === 0
+              ? true
+              : false,
+          first: index === 1 ? true : false,
         });
       }
       list.reverse();
@@ -47,33 +65,46 @@ export default {
       let list = [];
       let currentDate = this.$dayjs(this.selectedDate).set("date", 1);
       for (let index = 0; index < currentDate.daysInMonth(); index++) {
-        let selectedDate = currentDate.add(index, 'day');  
+        let selectedDate = currentDate.add(index, "day");
         list.push({
           date: selectedDate.format("YYYY-MM-DD"),
           isSelectedMonth: true,
-          isCurrentMonth: this.$dayjs().format("YYYY-MM") === selectedDate.format("YYYY-MM"),
-          isWeekend: selectedDate.weekday() === 6 || selectedDate.weekday() === 0 ? true : false,
+          isCurrentMonth:
+            this.$dayjs().format("YYYY-MM") === selectedDate.format("YYYY-MM"),
+          isWeekend:
+            selectedDate.weekday() === 6 || selectedDate.weekday() === 0
+              ? true
+              : false,
         });
       }
       return list;
     },
     nextMonth() {
       let list = [];
-      let currentDate = this.$dayjs(this.selectedDate).set("date", this.$dayjs(this.selectedDate).daysInMonth());
+      let currentDate = this.$dayjs(this.selectedDate).set(
+        "date",
+        this.$dayjs(this.selectedDate).daysInMonth()
+      );
       for (let index = 1; index < 7 - currentDate.weekday(); index++) {
-        let selectedDate = currentDate.add(index, 'day');  
+        let selectedDate = currentDate.add(index, "day");
         list.push({
           date: selectedDate.format("YYYY-MM-DD"),
           isSelectedMonth: false,
-          isCurrentMonth: this.$dayjs().format("YYYY-MM") === selectedDate.format("YYYY-MM"),
-          isWeekend: selectedDate.weekday() === 6 || selectedDate.weekday() === 0 ? true : false,
+          isCurrentMonth:
+            this.$dayjs().format("YYYY-MM") === selectedDate.format("YYYY-MM"),
+          isWeekend:
+            selectedDate.weekday() === 6 || selectedDate.weekday() === 0
+              ? true
+              : false,
         });
       }
       return list;
     },
   },
   methods: {
-    
+    dateSelected(dateSelected) {
+      this.selectedDate = dateSelected;
+    },
   },
 };
 </script>

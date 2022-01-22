@@ -1,105 +1,80 @@
 <template>
-  <v-form
-    ref="form"
-    v-model="valid"
-    lazy-validation
-  >
+  <v-form ref="form" v-model="valid" lazy-validation>
+    <h1>Schedule day: {{ selectedDate }}</h1>
     <v-text-field
-      v-model="name"
+      v-model="title"
       :counter="10"
-      :rules="nameRules"
-      label="Name"
+      :rules="TitleRules"
+      label="Title"
       required
     ></v-text-field>
 
     <v-text-field
-      v-model="email"
-      :rules="emailRules"
-      label="E-mail"
+      v-model="reminder"
+      :counter="30"
+      :rules="ReminderRules"
+      label="Reminder"
       required
     ></v-text-field>
 
-    <v-select
-      v-model="select"
-      :items="items"
-      :rules="[v => !!v || 'Item is required']"
-      label="Item"
+    <v-text-field
+      v-model="hourMinuteBegin"
+      :rules="[(v) => !!v || 'Hours and Minutes is required']"
+      label="Hour and Minute Begin"
       required
-    ></v-select>
+      type="time"
+    ></v-text-field>
 
-    <v-checkbox
-      v-model="checkbox"
-      :rules="[v => !!v || 'You must agree to continue!']"
-      label="Do you agree?"
+    <v-text-field
+      v-model="hourMinuteEnd"
+      :rules="[(v) => !!v || 'Hours and Minutes is required']"
+      label="Hour and Minute End"
       required
-    ></v-checkbox>
+      type="time"
+    ></v-text-field>
 
-    <v-btn
-      :disabled="!valid"
-      color="success"
-      class="mr-4"
-      @click="validate"
-    >
-      Validate
-    </v-btn>
+    <v-row>
+      <v-col cols="6">
+        <v-btn color="success" @click="submitForm"> Send </v-btn>
+      </v-col>
 
-    <v-btn
-      color="error"
-      class="mr-4"
-      @click="reset"
-    >
-      Reset Form
-    </v-btn>
-
-    <v-btn
-      color="warning"
-      @click="resetValidation"
-    >
-      Reset Validation
-    </v-btn>
-    <v-btn
-      color="warning"
-      @click="resetValidation"
-    >
-      Reset Validation
-    </v-btn>
+      <v-col cols="6">
+        <v-btn color="error" @click="cancelForm"> Cancel </v-btn>
+      </v-col>
+    </v-row>
   </v-form>
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      valid: true,
-      name: '',
-      nameRules: [
-        v => !!v || 'Name is required',
-        v => (v && v.length <= 10) || 'Name must be less than 10 characters',
-      ],
-      email: '',
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-      ],
-      select: null,
-      items: [
-        'Item 1',
-        'Item 2',
-        'Item 3',
-        'Item 4',
-      ],
-      checkbox: false,
-    }),
-
-    methods: {
-      validate () {
-        this.$refs.form.validate()
-      },
-      reset () {
-        this.$refs.form.reset()
-      },
-      resetValidation () {
-        this.$refs.form.resetValidation()
-      },
+export default {
+  props: ["date"],
+  data: () => ({
+    valid: true,
+    title: "",
+    TitleRules: [
+      (v) => !!v || "Title is required",
+      (v) => (v && v.length <= 10) || "Title must be less than 10 characters",
+    ],
+    reminder: "",
+    ReminderRules: [
+      (v) => !!v || "Reminder is required",
+      (v) =>
+        (v && v.length <= 30) || "Reminder must be less than 30 characters",
+    ],
+    hourMinuteBegin: "",
+    hourMinuteEnd: "",
+    selectedDate: null,
+  }),
+  created() {
+    this.selectedDate = this.$route.query.date;
+  },
+  methods: {
+    submitForm() {
+      this.$refs.form.validate();
     },
-  }
+    cancelForm() {
+      this.$router.push({ name: 'Home'})
+    },
+  },
+};
 </script>

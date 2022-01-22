@@ -121,6 +121,9 @@ export default {
 .calendar-day--weekend {
   background-color: var(--grey-100);
 }
+.day-text{
+  cursor: pointer;
+}
 
 .chip {
   display: inline-flex;
@@ -140,6 +143,7 @@ export default {
   vertical-align: middle;
   text-decoration: none;
   justify-content: center;
+  cursor: pointer;
 }
 .chip-head {
   display: flex;
