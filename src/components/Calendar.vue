@@ -2,12 +2,24 @@
   <div class="calendar-month">
     <div class="calendar-month-header">
       <CalendarMonthYearSelected />
-      <CalendarMonthSelector/>
+      <CalendarMonthSelector />
     </div>
     <CalendarHeader />
     <ol class="days-grid">
       <CalendarMonthDay v-for="day in days" :day="day" :key="day.date" />
     </ol>
+    <div class="text-center" v-if="offline">
+      <v-snackbar v-model="snackbar" :color="color">
+        {{ text }}
+
+        <template v-slot:action="{ attrs }">
+          <v-btn text v-bind="attrs" @click="snackbar = false">
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+    </div>
+    {{offline()}}
   </div>
 </template>
 <script>
@@ -27,22 +39,39 @@ export default {
   },
   data() {
     return {
-      
+      listActualDates: [],
+      calendar: [],
+      snackbar: false,
+      text: ``,
+      color: ''
     };
   },
-  created(){
-    this.selectedDate = this.$dayjs().format("YYYY-MM-DD")
+  created() {
+    this.$store.dispatch("LoadCalendarWithReminder");
+    // this.snackbar = true;
+    if(this.$route.params && this.$route.params.snackbar){
+      this.color = this.$route.params.color
+      this.text = this.$route.params.text
+      this.snackbar = this.$route.params.snackbar
+    }
   },
   computed: {
-    selectedDate(){
-      return this.$store.getters.dateSelected
+    selectedDate() {
+      return this.$store.getters.dateSelected;
     },
     days() {
-      
-      let listPrevious = this.previousMonth;
+      if (!this.$store.getters.forceUpdate) {
+        return;
+      }
 
-      return [...listPrevious, ...this.selectedMonth, ...this.nextMonth]
-      
+      const { calendar, reminders } =
+        this.$store.getters.getCalendarAndSelectedDate;
+
+      calendar.map((x) => {
+        x.reminders = reminders.filter((y) => y.date == x.date);
+      });
+
+      return [...calendar];
     },
     previousMonth() {
       let list = [];
@@ -64,12 +93,6 @@ export default {
       }
       list.reverse();
 
-      let listReminders = this.$store.getters.reminders;
-
-      list.map(x =>{
-          x.reminders= listReminders.filter(y=> y.selectedDate == x.date)
-      })
-
       return list;
     },
     selectedMonth() {
@@ -88,12 +111,6 @@ export default {
               : false,
         });
       }
-
-      let listReminders = this.$store.getters.reminders;
-
-      list.map(x =>{
-          x.reminders= listReminders.filter(y=> y.selectedDate == x.date)
-      })
 
       return list;
     },
@@ -117,17 +134,20 @@ export default {
         });
       }
 
-      let listReminders = this.$store.getters.reminders;
-
-      list.map(x =>{
-          x.reminders= listReminders.filter(y=> y.selectedDate == x.date)
-      })
-
       return list;
     },
   },
   methods: {
-    
+    offline(){
+      if(this.$store.getters.offline){
+        this.snackbar = this.$store.getters.offline
+        this.text = 'Offline version'
+        this.color = 'red'
+      }
+    }
+  },
+  watch: {
+
   },
 };
 </script>

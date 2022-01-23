@@ -31,21 +31,25 @@ export default {
         "ChangeDateSelected",
         this.$dayjs(this.dateSelected).subtract(1, "month").format("YYYY-MM-DD")
       );
+      this.$store.dispatch('LoadCalendarWithReminder')
     },
     monthYearSelectedToday() {
       this.$store.dispatch("ChangeDateSelected", this.$store.getters.todayDate);
+      this.$store.dispatch('LoadCalendarWithReminder')
     },
     monthYearSelectedNext() {
       this.$store.dispatch(
         "ChangeDateSelected",
         this.$dayjs(this.dateSelected).add(1, "month").format("YYYY-MM-DD")
       );
+      this.$store.dispatch('LoadCalendarWithReminder')
     },
     monthYearSelectedMonthPicker() {
       this.$store.dispatch(
         "ChangeDateSelected",
         this.$dayjs(`${this.monthYearSelected}-01`).format("YYYY-MM-DD")
       );
+      this.$store.dispatch('LoadCalendarWithReminder')
     },
   },
 };

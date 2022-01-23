@@ -13,19 +13,20 @@
       }}</span>
     </v-col>
 
-    <v-col cols="12" class="pa-1" v-for="reminder in day.reminders" :key="reminder.title">
-      <div class="chip" @click="$router.push({name: 'Edit', params: {reminder}})">
-        <div class="chip-content">{{reminder.title}}</div>
-        <div class="chip-head">C</div>
-      </div>
-    </v-col>
+    <div v-if="day.reminders.length > 0">
+      <v-col cols="12" class="pa-1"  v-for="reminder in day.reminders" :key="reminder.title">
+        <div class="chip" @click="$router.push({name: 'Edit', params: {reminder}})">
+          <div class="chip-content">{{reminder.title}}</div>
+          <div class="chip-head">C</div>
+        </div>
+      </v-col>
+    </div>
   </li>
 </template>
 
 <script>
 export default {
   name: "CalendarMonthDayItem",
-
   props: {
     day: {
       type: Object,

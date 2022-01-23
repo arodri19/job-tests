@@ -55,6 +55,7 @@
 export default {
   data: () => ({
     editReminder: {
+      id:0,
       uniqueCode: 0,
       title: "",
       reminder: "",
@@ -79,22 +80,59 @@ export default {
     this.editReminder = this.$route.params.reminder;
   },
   methods: {
-    submitForm() {
+    async submitForm() {
       if (this.$refs.form.validate()) {
-        let actualList = this.$store.getters.reminders;
-        let newList = actualList.filter(x=> x.uniqueCode != this.editReminder.uniqueCode)
-        newList.push({
-          ...this.editReminder
-        });
-        this.$store.dispatch("createReminder", newList);
+        try {
+          await this.$http
+            .put(`/reminder/${this.editReminder.id}`, this.editReminder, {
+              headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+              },
+            })
+            .then(async () => {
+              console.log("teste");
+            });
+        } catch (error) {
+          console.log(error);
+
+          let actualList = this.$store.getters.reminders;
+          let newList = actualList.filter(
+            (x) => x.uniqueCode != this.editReminder.uniqueCode
+          );
+          newList.push({
+            ...this.editReminder,
+          });
+          this.$store.dispatch("createReminder", newList);
+        }
+
+        
         this.$router.push({ name: "Home" });
       }
     },
-    deleteReminder(){
-        let actualList = this.$store.getters.reminders;
-        let newList = actualList.filter(x=> x.uniqueCode != this.editReminder.uniqueCode)
-        this.$store.dispatch("createReminder", newList);
-        this.$router.push({ name: "Home" });
+    async deleteReminder() {
+      try {
+          await this.$http
+            .delete(`/reminder/${this.editReminder.id}`, {
+              headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+              },
+            })
+            .then(async () => {
+              console.log("teste");
+            });
+        } catch (error) {
+          console.log(error);
+
+          let actualList = this.$store.getters.reminders;
+          let newList = actualList.filter(
+            (x) => x.uniqueCode != this.editReminder.uniqueCode
+          );
+          this.$store.dispatch("createReminder", newList);
+        }
+      
+      this.$router.push({ name: "Home" });
     },
     cancelForm() {
       this.$router.push({ name: "Home" });

@@ -1,6 +1,6 @@
 <template>
   <v-form ref="form" v-model="valid" lazy-validation>
-    <h1>Schedule day: {{ createReminder.selectedDate }}</h1>
+    <h1>Schedule day: {{ createReminder.date }}</h1>
     <v-text-field
       v-model="createReminder.title"
       :counter="10"
@@ -56,7 +56,7 @@ export default {
       reminder: "",
       hourMinuteBegin: "",
       hourMinuteEnd: "",
-      selectedDate: null,
+      date: null,
     },
     validation:{
       TitleRules: [
@@ -72,15 +72,32 @@ export default {
     valid: true
   }),
   created() {
-    this.createReminder.selectedDate = this.$route.query.date;
+    this.createReminder.date = this.$route.query.date;
   },
   methods: {
-    submitForm() {
+    async submitForm() {
       if (this.$refs.form.validate()) {
-        let actualList = this.$store.getters.reminders;
-        actualList.push({...this.createReminder, uniqueCode: this.$store.getters.uniqueCode});
-        this.$store.dispatch("createReminder", actualList);
-        this.$router.push({ name: "Home" });
+        
+        try {
+            await this.$http.post(
+                `/reminder`,
+                this.createReminder,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin' : '*',
+                    }
+                }
+            ).then(async () =>{
+              
+            })
+        } catch (error) {
+            let actualList = this.$store.getters.reminders;
+            actualList.push({...this.createReminder, uniqueCode: this.$store.getters.uniqueCode});
+            this.$store.dispatch("createReminder", actualList);
+        }
+        
+        this.$router.push({ name: "Home", params:{snackbar: true, text:'Reminder created', color:'green'} });
       }
     },
     cancelForm() {
