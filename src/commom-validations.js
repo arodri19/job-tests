@@ -1,23 +1,29 @@
 const { InvalidArgumentError } = require('./errors');
+const dayjs = require('dayjs')
 
 
 module.exports = {
-  campoStringNaoNulo(valor, nome){
-    if (typeof valor !== 'string' || valor === 0)
-      throw new InvalidArgumentError(`É necessário preencher o campo ${nome}!`);
+  stringNotEmpty(value, name){
+    if (typeof value !== 'string' || value === 0)
+      throw new InvalidArgumentError(`É necessário preencher o campo ${name}!`);
   },
-
-  campoTamanhoMinimo(valor, nome, minimo){
-    if (valor.length < minimo)
+  stringMinLength(value, name, min){
+    if (value.length < min)
       throw new InvalidArgumentError(
-        `O campo ${nome} precisa ser maior que ${minimo} caracteres!`
+        `O campo ${name} precisa ser maior que ${min} caracteres!`
       );
   },
-
-  campoTamanhoMaximo(valor, nome, maximo){
-    if (valor.length > maximo)
+  stringMaxLength(value, name, max){
+    if (value.length > max)
       throw new InvalidArgumentError(
-        `O campo ${nome} precisa ser menor que ${maximo} caracteres!`
+        `O campo ${name} precisa ser menor que ${max} caracteres!`
       );
+  },
+  stringCheckDate(value, name){
+    if(!dayjs(value).isValid()){
+      throw new InvalidArgumentError(
+        `O campo ${name} não foi preenchida corretamente`
+      );
+    }
   }
 };

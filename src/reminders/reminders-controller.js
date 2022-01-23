@@ -2,10 +2,20 @@ const Reminder = require('./reminders-model');
 const { InvalidArgumentError } = require('../errors');
 
 module.exports = {
-    async adiciona(req, res, proximo) {
+    async addReminder(req, res, proximo) {
+        const {date,hourMinuteBegin,hourMinuteEnd,reminder,title} = req.body
         try {
+            const createReminder = new Reminder({
+                date,
+                hourMinuteBegin,
+                hourMinuteEnd,
+                reminder,
+                title
+            })
 
-            res.status(201).send({ msg: '' });
+            await createReminder.create();
+
+            res.status(201).send({ msg: 'Reminder Created' });
         } catch (erro) {
             if (erro instanceof InvalidArgumentError) {
                 res.status(422).json({ erro: erro.message });
@@ -15,26 +25,50 @@ module.exports = {
         }
     },
 
-    async lista(req, res, proximo) {
+    async listReminders(req, res, proximo) {
         try {
-
-            res.send({ msg: 'teste' });
+            const {dateBegin, dateEnd} = req.params
+            const reminders = await Reminder.listSelectedDate(dateBegin,dateEnd);
+            res.send(reminders);
+        } catch (erro) {
+            return res.status(500).json({ erro: erro });
+        }
+    },
+    async getDetailsReminder(req, res, proximo) {
+        try {
+            const {id} = req.params
+            const reminder = await Reminder.detailReminder(id);
+            res.send(reminder);
         } catch (erro) {
             return res.status(500).json({ erro: erro });
         }
     },
 
-    async obterDetalhes(req, res, proximo) {
+    async updateReminder(req, res, proximo) {
         try {
-            res.status(201).send({ msg: '' });
+            const {date,hourMinuteBegin,hourMinuteEnd,reminder,title} = req.body
+            const {id} = req.params
+            const updateReminder = new Reminder({
+                id,
+                date,
+                hourMinuteBegin,
+                hourMinuteEnd,
+                reminder,
+                title
+            })
+            await updateReminder.updateReminder();
+            res.status(201).send({ msg: 'Reminder updated' });
         } catch (erro) {
             return res.status(500).json({ erro: erro.message })
         }
     },
 
-    async remover(req, res, proximo) {
+    async deleteReminder(req, res, proximo) {
         try {
-            res.status(201).send({ msg: '' });
+            const {id} = req.params
+            const reminder = await Reminder.detailReminder(id);
+            await reminder.deleteReminder()
+            res.status(201).send({ msg: 'Reminder deleted' });
         } catch (erro) {
             return res.status(500).json({ erro: erro.message })
         }

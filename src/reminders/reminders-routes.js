@@ -1,24 +1,26 @@
-const postsControlador = require('./reminders-controller');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('../swagger/swagger-output.json');
+const remindersControllers = require('./reminders-controller');
 
 module.exports = app => {
     app
-        .route('/post')
+        .route('/reminder/:dateBegin/:dateEnd')
         .get(
-            postsControlador.lista
+            remindersControllers.listReminders
         )
+    app
+        .route('/reminder')
         .post(
-            postsControlador.adiciona
+            remindersControllers.addReminder
         )
 
-    app.route('/post/:id')
+    app.route('/reminder/:id')
         .get(
-            postsControlador.obterDetalhes
+            remindersControllers.getDetailsReminder
+        )
+        .put(
+            remindersControllers.updateReminder
         )
         .delete(
-            postsControlador.remover
+            remindersControllers.deleteReminder
         )
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 }
 

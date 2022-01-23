@@ -20,17 +20,9 @@ class NaoEncontrado extends Error{
   }
 }
 
-class NaoAutorizado extends Error{
-  constructor(){
-    const mensagem = `Não foi possível acessar esse recurso`
-    super(mensagem)
-    this.name = 'NaoAutorizado'
-  }
-}
 
 module.exports = {
   InvalidArgumentError: InvalidArgumentError,
   InternalServerError: InternalServerError,
   NaoEncontrado: NaoEncontrado,
-  NaoAutorizado:NaoAutorizado
 };

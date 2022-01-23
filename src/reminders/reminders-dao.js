@@ -5,48 +5,52 @@ const dbRun = promisify(db.run).bind(db);
 const dbGet = promisify(db.get).bind(db);
 const dbAll = promisify(db.all).bind(db);
 
+
 module.exports = {
-  async adiciona (post) {
+  async createReminder (reminder) {
     try {
-      await dbRun('INSERT INTO posts (titulo, conteudo, autor) VALUES (?, ?, ?)', [
-        post.titulo,
-        post.conteudo,
-        post.autor
+      await dbRun('INSERT INTO reminders (title, reminder, hourMinuteBegin,hourMinuteEnd,date, createdAt, updatedAt) VALUES (?, ?, ?,?,?, DATE(), DATE())', [
+        reminder.title,
+        reminder.reminder,
+        reminder.hourMinuteBegin,
+        reminder.hourMinuteEnd,
+        reminder.date
       ])
     } catch (erro) {
-      throw new InternalServerError('Erro ao adicionar o post!')
+      throw new InternalServerError('Erro ao adicionar o reminder!')
     }
   },
 
-  async listarPorAutor (idAutor) {
+  async listReminders (dateBegin, dateEnd) {
     try {
-      return await dbAll('SELECT id, titulo FROM posts WHERE autor = ?', [idAutor])
+      return await dbAll('SELECT id, title, reminder, hourMinuteBegin,hourMinuteEnd, date FROM reminders where date between ? AND ?', [dateBegin,dateEnd])
     } catch (erro) {
-      throw new InternalServerError('Erro ao listar os posts!')
+      throw new InternalServerError('Erro ao listar os reminders!')
     }
   },
 
-  async listarTodos () {
+  async detailReminder (id) {
     try {
-      return await dbAll('SELECT id, titulo, conteudo, autor FROM posts')
+      return await dbGet('SELECT id, title, reminder, hourMinuteBegin, hourMinuteEnd, date FROM reminders where id = ?', [id])
     } catch (erro) {
-      throw new InternalServerError('Erro ao listar os posts!')
+      throw new InternalServerError('Não foi possível encontrar o reminder!')
     }
   },
 
-  async buscaPorId (id, idAutor) {
+  async updateReminder (reminder) {
     try {
-      return await dbGet('SELECT * FROM posts WHERE id = ? AND autor = ?', [id, idAutor])
+      return await dbRun('UPDATE reminders SET title = ?, reminder = ?, hourMinuteBegin=?, hourMinuteEnd=?, updatedAt = DATE() where id = ?', 
+        [reminder.title, reminder.reminder, reminder.hourMinuteBegin, reminder.hourMinuteEnd, reminder.id])
     } catch (erro) {
-      throw new InternalServerError('Não foi possível encontrar o post!')
+      throw new InternalServerError('Erro ao tentar remover o reminder!')
     }
   },
 
-  async remover ({ id, autor }) {
+  async deleteReminder ({id}) {
     try {
-      return await dbRun('DELETE FROM posts WHERE id = ? AND autor = ?', [id, autor])
+      return await dbRun('DELETE FROM reminders WHERE id = ?', [id])
     } catch (erro) {
-      throw new InternalServerError('Erro ao tentar remover o post!')
+      throw new InternalServerError('Erro ao tentar remover o reminder!')
     }
   }
 };

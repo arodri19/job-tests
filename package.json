@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "nodemon": "nodemon --inspect server.js",
+    "nodemon": "nodemon --inspect ./src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-gendoc": "node ./src/swagger/swagger.js"
   },
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/arodri19/calendar_test_backend#readme",
   "dependencies": {
     "body-parser": "^1.19.1",
+    "cors": "^2.8.5",
     "dayjs": "^1.10.7",
     "dotenv": "^14.2.0",
     "express": "^4.17.2",
@@ -31,6 +32,8 @@
   },
   "devDependencies": {
     "esdoc": "^1.1.0",
-    "esdoc-standard-plugin": "^1.0.0"
+    "esdoc-standard-plugin": "^1.0.0",
+    "nodemon": "^2.0.15",
+    "sequelize-cli": "^6.4.1"
   }
 }

@@ -1,47 +1,62 @@
-const postsDao = require('./reminders-dao');
-const validacoes = require('../commom-validations');
+const remindersDAO = require('./reminders-dao');
+const validations = require('../commom-validations');
 
-class Post {
-  constructor (post) {
-    this.id = post.id
-    this.titulo = post.titulo
-    this.conteudo = post.conteudo
-    this.autor = post.autor
-    this.valida()
+class Reminder {
+  constructor (reminder) {
+    this.id = reminder.id
+    this.title = reminder.title
+    this.reminder = reminder.reminder
+    this.hourMinuteBegin = reminder.hourMinuteBegin
+    this.hourMinuteEnd = reminder.hourMinuteEnd
+    this.date = reminder.date
+    this.validate()
+  }
+  validate () {
+
+    validations.stringNotEmpty(this.title, 'title')
+    validations.stringMaxLength(this.title, 'title', 10)
+
+    validations.stringNotEmpty(this.reminder, 'reminder')
+    validations.stringMaxLength(this.reminder, 'reminder', 30)
+
+    validations.stringNotEmpty(this.hourMinuteBegin, 'hourMinuteBegin')
+    
+    validations.stringNotEmpty(this.hourMinuteEnd, 'hourMinuteEnd')
+
+    validations.stringNotEmpty(this.date, 'date')
+    validations.stringCheckDate(this.date, 'date')
+
   }
 
-  adiciona () {
-    return postsDao.adiciona(this)
+  async create () {
+    return await remindersDAO.createReminder(this)
   }
 
-  static async buscaPorId (id, idAutor) {
-    const post = await postsDao.buscaPorId(id, idAutor)
-    if (!post) {
+  static async listSelectedDate(dateBegin, dateEnd){
+    const reminders = await remindersDAO.listReminders(dateBegin, dateEnd)
+    if (!reminders) {
+      return []
+    }
+
+    return reminders
+  }
+
+  static async detailReminder (id) {
+    const reminder = await remindersDAO.detailReminder(id)
+    if (!reminder) {
       return null
     }
 
-    return new Post(post)
+    return new Reminder(reminder)
   }
 
-  valida () {
-    validacoes.campoStringNaoNulo(this.titulo, 'titulo')
-    validacoes.campoTamanhoMinimo(this.titulo, 'titulo', 5)
-
-    validacoes.campoStringNaoNulo(this.conteudo, 'conteudo')
-    validacoes.campoTamanhoMaximo(this.conteudo, 'conteudo', 140)
+  async updateReminder(){
+    return await remindersDAO.updateReminder(this)
   }
 
-  remover () {
-    return postsDao.remover(this)
-  }
-
-  static listarPorAutor (idAutor) {
-    return postsDao.listarPorAutor(idAutor)
-  }
-
-  static listarTodos () {
-    return postsDao.listarTodos()
+  async deleteReminder () {
+    return await remindersDAO.deleteReminder(this)
   }
 }
 
-module.exports = Post;
+module.exports = Reminder;
