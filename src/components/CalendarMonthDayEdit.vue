@@ -36,6 +36,28 @@
       type="time"
     ></v-text-field>
 
+    <v-autocomplete
+      :items="colors"
+      v-model="form.color"
+      :rules="[(v) => !!v || 'Color is required']"
+      label="Color"
+      required
+    ></v-autocomplete>
+
+    <v-autocomplete
+      :items="states"
+      v-model="form.state"
+      label="State"
+      item-text="name"
+      item-value="name"
+      @blur="getCities"
+    ></v-autocomplete>
+    <v-autocomplete
+      :items="cities"
+      v-model="form.city"
+      label="City"
+    ></v-autocomplete>
+
     <v-row>
       <v-col cols="4">
         <v-btn color="success" @click="updateReminder"> Send </v-btn>
@@ -58,6 +80,40 @@ export default {
   mixins: [formReminder],
   created() {
     this.form = this.$route.params.reminder;
+    this.getStates()
+  },
+  methods: {
+    getStates() {
+      this.$http.post(
+        `https://countriesnow.space/api/v0.1/countries/states`,
+        { country: "Brazil" },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      )
+      .then(res => {
+        this.states = res.data.data.states
+        this.getCities()
+      });
+    },
+    getCities() {
+      this.$http.post(
+        `https://countriesnow.space/api/v0.1/countries/state/cities`,
+        { country: "Brazil", state: this.form.state },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      )
+      .then(res => {
+        this.cities = res.data.data
+      });
+    },
   },
 };
 </script>

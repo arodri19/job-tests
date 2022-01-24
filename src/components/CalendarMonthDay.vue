@@ -23,11 +23,21 @@
         :key="reminder.title"
       >
         <div
-          class="chip"
+          :class="['chip', 'background-light-' + reminder.color]"
           @click="$router.push({ name: 'Edit', params: { reminder } })"
         >
-          <div class="chip-content">{{ reminder.title }}</div>
-          <div class="chip-head">C</div>
+          <div class="chip-content pr-2">{{ reminder.title }}</div>
+          <div v-if="reminder.weather" :class="'chip-head-weather'">
+            <img
+              class="img-size"
+              :src="
+                'http://openweathermap.org/img/wn/' +
+                reminder.weather[0].icon +
+                '.png'
+              "
+            />
+          </div>
+          <div v-else class="chip-head">R</div>
         </div>
       </v-col>
     </div>
@@ -95,10 +105,26 @@ export default {
   cursor: pointer;
 }
 
+.background-light-blue {
+  background-color: lightblue;
+}
+
+.background-light-red {
+  background-color: lightcoral;
+}
+
+.background-light-green {
+  background-color: lightgreen;
+}
+
+.background-light-yellow {
+  background-color: lightyellow;
+}
+
 .chip {
   display: inline-flex;
   flex-direction: row;
-  background-color: #e5e5e5;
+  /* background-color: lightblue; */
   border: none;
   cursor: default;
   height: 18px;
@@ -131,5 +157,25 @@ export default {
   height: 18px;
   font-size: 12px;
   margin-right: -4px;
+}
+.chip-head-weather {
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  background-color: black;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  align-items: center;
+  user-select: none;
+  border-radius: 50%;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  margin-right: -4px;
+}
+.img-size {
+  width: 30px;
+  height: 30px;
 }
 </style>

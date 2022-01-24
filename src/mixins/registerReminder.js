@@ -9,6 +9,10 @@ export default {
             hourMinuteBegin: "",
             hourMinuteEnd: "",
             date: null,
+            country: 'Brazil',
+            state: null,
+            city: null,
+            color: 'blue'
         },
         validation: {
             TitleRules: [
@@ -21,7 +25,10 @@ export default {
                     (v && v.length <= 30) || "Reminder must be less than 30 characters",
             ],
         },
-        valid: true
+        valid: true,
+        states: [],
+        cities: [],
+        colors: ['blue','green','red','yellow']
     }),
     methods: {
         async createReminder() {
