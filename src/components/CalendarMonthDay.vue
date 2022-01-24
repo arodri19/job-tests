@@ -3,20 +3,30 @@
     class="calendar-day"
     :class="{
       'calendar-day--not-selected': !day.isSelectedMonth,
-      'calendar-day--today': isToday,
+      'calendar-day--today': day.isToday,
       'calendar-day--weekend': day.isWeekend,
     }"
   >
     <v-col cols="12">
-      <span class="day-text" @click="$router.push({ name: 'Create', query: {date: day.date} })">{{
-        label
-      }}</span>
+      <span
+        class="day-text"
+        @click="$router.push({ name: 'Create', query: { date: day.date } })"
+        >{{ label }}</span
+      >
     </v-col>
 
     <div v-if="day.reminders.length > 0">
-      <v-col cols="12" class="pa-1"  v-for="reminder in day.reminders" :key="reminder.title">
-        <div class="chip" @click="$router.push({name: 'Edit', params: {reminder}})">
-          <div class="chip-content">{{reminder.title}}</div>
+      <v-col
+        cols="12"
+        class="pa-1"
+        v-for="reminder in day.reminders"
+        :key="reminder.title"
+      >
+        <div
+          class="chip"
+          @click="$router.push({ name: 'Edit', params: { reminder } })"
+        >
+          <div class="chip-content">{{ reminder.title }}</div>
           <div class="chip-head">C</div>
         </div>
       </v-col>
@@ -26,21 +36,11 @@
 
 <script>
 export default {
-  name: "CalendarMonthDayItem",
+  name: "CalendarMonthDay",
   props: {
     day: {
       type: Object,
       required: true,
-    },
-
-    isCurrentMonth: {
-      type: Boolean,
-      default: false,
-    },
-
-    isToday: {
-      type: Boolean,
-      default: false,
     },
   },
   computed: {
@@ -79,7 +79,7 @@ export default {
 }
 
 .calendar-day--today {
-  padding-top: 4px;
+  background-color: lightblue;
 }
 
 .calendar-day--today > span {
@@ -91,7 +91,7 @@ export default {
 .calendar-day--weekend {
   background-color: var(--grey-100);
 }
-.day-text{
+.day-text {
   cursor: pointer;
 }
 

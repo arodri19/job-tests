@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row>
-      <v-text-field type="month" lang="en-US" v-model="monthYearSelected" />
+      <v-text-field type="month" lang="en-US" v-model="monthYear" />
       <v-btn class="ma-2 pa-1 text-format" @click="monthYearSelectedMonthPicker"
         >change</v-btn
       >
@@ -17,39 +17,47 @@
 <script>
 /* eslint-disable vue/no-parsing-error */
 export default {
+  name: "CalendarMonthSelector",
   computed: {
     dateSelected() {
       return this.$store.getters.dateSelected;
     },
+    nextMonth() {
+      return this.$dayjs(this.dateSelected)
+        .add(1, "month")
+        .format("YYYY-MM-DD");
+    },
+    previousMonth() {
+      return this.$dayjs(this.dateSelected)
+        .subtract(1, "month")
+        .format("YYYY-MM-DD");
+    },
+    monthYearSelected() {
+      return this.$dayjs(`${this.monthYear}-01`).format("YYYY-MM-DD");
+    },
+    todayDate() {
+      return this.$store.getters.todayDate;
+    },
   },
   data: () => ({
-    monthYearSelected: "",
+    monthYear: "",
   }),
   methods: {
     monthYearSelectedPrevious() {
-      this.$store.dispatch(
-        "ChangeDateSelected",
-        this.$dayjs(this.dateSelected).subtract(1, "month").format("YYYY-MM-DD")
-      );
-      this.$store.dispatch('LoadCalendarWithReminder')
+      this.dispatchDateSelected(this.previousMonth);
     },
     monthYearSelectedToday() {
-      this.$store.dispatch("ChangeDateSelected", this.$store.getters.todayDate);
-      this.$store.dispatch('LoadCalendarWithReminder')
+      this.dispatchDateSelected(this.todayDate);
     },
     monthYearSelectedNext() {
-      this.$store.dispatch(
-        "ChangeDateSelected",
-        this.$dayjs(this.dateSelected).add(1, "month").format("YYYY-MM-DD")
-      );
-      this.$store.dispatch('LoadCalendarWithReminder')
+      this.dispatchDateSelected(this.nextMonth);
     },
     monthYearSelectedMonthPicker() {
-      this.$store.dispatch(
-        "ChangeDateSelected",
-        this.$dayjs(`${this.monthYearSelected}-01`).format("YYYY-MM-DD")
-      );
-      this.$store.dispatch('LoadCalendarWithReminder')
+      this.dispatchDateSelected(this.monthYearSelected);
+    },
+    dispatchDateSelected(date) {
+      this.$store.dispatch("ChangeDateSelected", date);
+      this.$store.dispatch("LoadCalendarWithReminder");
     },
   },
 };

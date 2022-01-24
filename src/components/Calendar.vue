@@ -8,7 +8,7 @@
     <ol class="days-grid">
       <CalendarMonthDay v-for="day in days" :day="day" :key="day.date" />
     </ol>
-    {{offline()}}
+    {{ offline() }}
   </div>
 </template>
 <script>
@@ -27,27 +27,21 @@ export default {
     CalendarMonthSelector,
   },
   data() {
-    return {
-    };
+    return {};
   },
   created() {
     this.$store.dispatch("LoadCalendarWithReminder");
-    if(this.$route.params && this.$route.params.text){
-      this.$toast.success(this.$route.params.text);
-      this.$route.params.text = null
-    }
+    this.successMessage();
   },
   computed: {
-    selectedDate() {
-      return this.$store.getters.dateSelected;
-    },
     days() {
       if (!this.$store.getters.forceUpdate) {
         return;
       }
 
-      const { calendar, reminders } =
-        this.$store.getters.getCalendarAndSelectedDate;
+      const calendar = this.$store.getters.actualListCalendar;
+
+      const reminders = this.$store.getters.reminders;
 
       calendar.map((x) => {
         x.reminders = reminders.filter((y) => y.date == x.date);
@@ -57,16 +51,20 @@ export default {
     },
   },
   methods: {
-    offline(){
-      if(this.$store.getters.offline){
-        this.$store.dispatch("setOffline")
-        this.$toast.error('Offline version');
+    offline() {
+      if (this.$store.getters.offline) {
+        this.$store.dispatch("setOffline");
+        this.$toast.error("Offline version");
       }
-    }
+    },
+    successMessage() {
+      if (this.$route.params && this.$route.params.text) {
+        this.$toast.success(this.$route.params.text);
+        this.$route.params.text = null;
+      }
+    },
   },
-  watch: {
-
-  },
+  watch: {},
 };
 </script>
 

@@ -1,6 +1,8 @@
 <template>
   <div class="day-of-week">
-    <div class="day" v-for="weekday in weekdays" :key="weekday">{{ weekday }}</div>
+    <div class="day" v-for="weekday in weekdays" :key="weekday">
+      {{ weekday }}
+    </div>
   </div>
 </template>
 
@@ -16,7 +18,7 @@ const WEEKDAYS = [
 ];
 
 export default {
-  name: "CalendarWeekdays",
+  name: "CalendarHeader",
 
   computed: {
     weekdays() {
@@ -31,7 +33,7 @@ export default {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   background-color: lightgreen;
-  
+
   padding-bottom: 0px;
   padding-top: 0px;
 }
@@ -41,7 +43,7 @@ export default {
   font-weight: bold;
 }
 
-.day{
+.day {
   border-left: 0px;
   border-bottom: 0px;
   border-top: black 1px solid;
