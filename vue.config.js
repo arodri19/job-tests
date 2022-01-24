@@ -3,5 +3,5 @@ module.exports = {
     'vuetify'
   ],
   outputDir: './docs',
-  publicPath: '/calendar_test/'
+  publicPath: process.env.NODE_ENV === 'production' ? 'https://arodri19.github.io/calendar_test/' : '/'
 }
