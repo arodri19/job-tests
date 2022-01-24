@@ -8,17 +8,6 @@
     <ol class="days-grid">
       <CalendarMonthDay v-for="day in days" :day="day" :key="day.date" />
     </ol>
-    <div class="text-center" v-if="offline">
-      <v-snackbar v-model="snackbar" :color="color">
-        {{ text }}
-
-        <template v-slot:action="{ attrs }">
-          <v-btn text v-bind="attrs" @click="snackbar = false">
-            Close
-          </v-btn>
-        </template>
-      </v-snackbar>
-    </div>
     {{offline()}}
   </div>
 </template>
@@ -39,20 +28,13 @@ export default {
   },
   data() {
     return {
-      listActualDates: [],
-      calendar: [],
-      snackbar: false,
-      text: ``,
-      color: ''
     };
   },
   created() {
     this.$store.dispatch("LoadCalendarWithReminder");
-    // this.snackbar = true;
-    if(this.$route.params && this.$route.params.snackbar){
-      this.color = this.$route.params.color
-      this.text = this.$route.params.text
-      this.snackbar = this.$route.params.snackbar
+    if(this.$route.params && this.$route.params.text){
+      this.$toast.success(this.$route.params.text);
+      this.$route.params.text = null
     }
   },
   computed: {
@@ -73,76 +55,12 @@ export default {
 
       return [...calendar];
     },
-    previousMonth() {
-      let list = [];
-      let currentDate = this.$dayjs(this.selectedDate).set("date", 1);
-      let index = 1;
-      for (index; index <= currentDate.weekday(); index++) {
-        let previousDate = currentDate.subtract(index, "day");
-        list.push({
-          date: previousDate.format("YYYY-MM-DD"),
-          isSelectedMonth: false,
-          isCurrentMonth:
-            this.$dayjs().format("YYYY-MM") === previousDate.format("YYYY-MM"),
-          isWeekend:
-            previousDate.weekday() === 6 || previousDate.weekday() === 0
-              ? true
-              : false,
-          first: index === 1 ? true : false,
-        });
-      }
-      list.reverse();
-
-      return list;
-    },
-    selectedMonth() {
-      let list = [];
-      let currentDate = this.$dayjs(this.selectedDate).set("date", 1);
-      for (let index = 0; index < currentDate.daysInMonth(); index++) {
-        let selectedDate = currentDate.add(index, "day");
-        list.push({
-          date: selectedDate.format("YYYY-MM-DD"),
-          isSelectedMonth: true,
-          isCurrentMonth:
-            this.$dayjs().format("YYYY-MM") === selectedDate.format("YYYY-MM"),
-          isWeekend:
-            selectedDate.weekday() === 6 || selectedDate.weekday() === 0
-              ? true
-              : false,
-        });
-      }
-
-      return list;
-    },
-    nextMonth() {
-      let list = [];
-      let currentDate = this.$dayjs(this.selectedDate).set(
-        "date",
-        this.$dayjs(this.selectedDate).daysInMonth()
-      );
-      for (let index = 1; index < 7 - currentDate.weekday(); index++) {
-        let selectedDate = currentDate.add(index, "day");
-        list.push({
-          date: selectedDate.format("YYYY-MM-DD"),
-          isSelectedMonth: false,
-          isCurrentMonth:
-            this.$dayjs().format("YYYY-MM") === selectedDate.format("YYYY-MM"),
-          isWeekend:
-            selectedDate.weekday() === 6 || selectedDate.weekday() === 0
-              ? true
-              : false,
-        });
-      }
-
-      return list;
-    },
   },
   methods: {
     offline(){
       if(this.$store.getters.offline){
-        this.snackbar = this.$store.getters.offline
-        this.text = 'Offline version'
-        this.color = 'red'
+        this.$store.dispatch("setOffline")
+        this.$toast.error('Offline version');
       }
     }
   },

@@ -90,11 +90,7 @@ export default {
                 "Access-Control-Allow-Origin": "*",
               },
             })
-            .then(async () => {
-              console.log("teste");
-            });
         } catch (error) {
-          console.log(error);
 
           let actualList = this.$store.getters.reminders;
           let newList = actualList.filter(
@@ -107,7 +103,7 @@ export default {
         }
 
         
-        this.$router.push({ name: "Home" });
+        this.$router.push({ name: "Home", params:{text:'Reminder updated'} });
       }
     },
     async deleteReminder() {
@@ -119,11 +115,7 @@ export default {
                 "Access-Control-Allow-Origin": "*",
               },
             })
-            .then(async () => {
-              console.log("teste");
-            });
         } catch (error) {
-          console.log(error);
 
           let actualList = this.$store.getters.reminders;
           let newList = actualList.filter(
@@ -132,7 +124,7 @@ export default {
           this.$store.dispatch("createReminder", newList);
         }
       
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: "Home", params:{text:'Reminder deleted'} });
     },
     cancelForm() {
       this.$router.push({ name: "Home" });

@@ -44,6 +44,9 @@ export default {
             let calendar = context.getters.actualListCalendar
             context.dispatch("loadData", { listDates: calendar, firstDate: calendar[0], lastDate: calendar[calendar.length - 1], vm: Vue.prototype });
             console.log(context)
+        },
+        setOffline({commit}){
+            commit("setOffline")
         }
     },
     getters: {
