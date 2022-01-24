@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/arodri19/calendar_test_backend#readme",
   "dependencies": {
+    "axios": "^0.25.0",
     "body-parser": "^1.19.1",
     "cors": "^2.8.5",
     "dayjs": "^1.10.7",

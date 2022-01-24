@@ -1,16 +1,21 @@
 const Reminder = require('./reminders-model');
 const { InvalidArgumentError } = require('../errors');
+const repositoryReminder = require("./reminders-repository")
 
 module.exports = {
     async addReminder(req, res, proximo) {
-        const {date,hourMinuteBegin,hourMinuteEnd,reminder,title} = req.body
+        const {date,hourMinuteBegin,hourMinuteEnd,reminder,title, country, state, city, color} = req.body
         try {
             const createReminder = new Reminder({
                 date,
                 hourMinuteBegin,
                 hourMinuteEnd,
                 reminder,
-                title
+                title,
+                country,
+                state,
+                city,
+                color,
             })
 
             await createReminder.create();
@@ -29,6 +34,13 @@ module.exports = {
         try {
             const {dateBegin, dateEnd} = req.params
             const reminders = await Reminder.listSelectedDate(dateBegin,dateEnd);
+
+            for (const reminder of reminders) {
+                if(reminder.state && reminder.city){
+                    await repositoryReminder.getWeatherByCountryStateCity(reminder)
+                }
+            }
+
             res.send(reminders);
         } catch (erro) {
             return res.status(500).json({ erro: erro });
@@ -46,7 +58,7 @@ module.exports = {
 
     async updateReminder(req, res, proximo) {
         try {
-            const {date,hourMinuteBegin,hourMinuteEnd,reminder,title} = req.body
+            const {date,hourMinuteBegin,hourMinuteEnd,reminder,title,country,state,city, color} = req.body
             const {id} = req.params
             const updateReminder = new Reminder({
                 id,
@@ -54,7 +66,11 @@ module.exports = {
                 hourMinuteBegin,
                 hourMinuteEnd,
                 reminder,
-                title
+                title,
+                country,
+                state,
+                city,
+                color
             })
             await updateReminder.updateReminder();
             res.status(201).send({ msg: 'Reminder updated' });

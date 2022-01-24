@@ -9,6 +9,10 @@ class Reminder {
     this.hourMinuteBegin = reminder.hourMinuteBegin
     this.hourMinuteEnd = reminder.hourMinuteEnd
     this.date = reminder.date
+    this.country = reminder.country
+    this.state = reminder.state
+    this.city = reminder.city
+    this.color = reminder.color
     this.validate()
   }
   validate () {
@@ -22,6 +26,8 @@ class Reminder {
     validations.stringNotEmpty(this.hourMinuteBegin, 'hourMinuteBegin')
     
     validations.stringNotEmpty(this.hourMinuteEnd, 'hourMinuteEnd')
+
+    validations.stringNotEmpty(this.color, 'color')
 
     validations.stringNotEmpty(this.date, 'date')
     validations.stringCheckDate(this.date, 'date')

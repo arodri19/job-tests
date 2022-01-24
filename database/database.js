@@ -8,7 +8,10 @@ const REMINDERS_SCHEMA = `
     reminder VARCHAR(30) NOT NULL,
     hourMinuteBegin TIME NOT NULL,
     hourMinuteEnd TIME NOT NULL,
-    date DATE NOT NULL
+    date DATE NOT NULL,
+    country VARCHAR(30),
+    state VARCHAR(50),
+    city VARCHAR(50)
   )
   `;
 

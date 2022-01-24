@@ -20,7 +20,7 @@ Caso não tenha a pasta migrations
 npx sequelize-cli init
 
 #cria os modelos de banco
-npx sequelize-cli model:create --name Reminders --attributes title:string,reminder:string,hourMinuteBegin:time,hourMinuteEnd:time,date:date
+npx sequelize-cli model:create --name Reminders --attributes title:string,reminder:string,hourMinuteBegin:time,hourMinuteEnd:time,date:date,country:string,state:string,city:string,color:string
 
 #Efetiva a execução no banco
 npx sequelize-cli db:migrate
@@ -45,6 +45,10 @@ npm run start
         - controller
             - model
                 - dao
+
+
+## Detalhes adicionais
+- Para utilizar a api do tempo, é necessário criar uma api-key no site https://openweathermap.org/ e criar um arquivo na pasta raiz do projeto, com o nome .env e dentro colocar API_KEY_WEATHER="${API-KEY}"
 
 
 ## Tecnologias utilizadas

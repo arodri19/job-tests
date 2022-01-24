@@ -4,7 +4,8 @@
     "password": "root",
     "database": "database_development",
     "host": "db.sqlite",
-    "dialect": "sqlite"
+    "dialect": "sqlite",
+    "urlWeather": "http://api.openweathermap.org/data/2.5/weather?q="
   },
   "test": {
     "username": "root",
