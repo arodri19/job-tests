@@ -31,6 +31,7 @@ export default {
         },
         ChangeDateSelected({ commit }, dateSelected) {
             commit('setDateSelected', dateSelected)
+            commit('setDateSelectedCalendar', dateSelected)
         },
         LoadCalendarWithReminder(context) {
             context.dispatch("calendarList");

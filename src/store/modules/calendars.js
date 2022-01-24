@@ -2,22 +2,29 @@ import Vue from 'vue'
 export default {
     state: {
         actualListCalendar: [],
+        dateSelectedCalendar:''
     },
     mutations: {
         setActualListCalendar(state, actualListCalendar) {
             state.actualListCalendar = actualListCalendar
         },
+        setDateSelectedCalendar(state, dateSelectedCalendar){
+            state.dateSelectedCalendar = dateSelectedCalendar
+        }
     },
     actions: {
 
         calendarList({ commit, getters }) {
             commit("setActualListCalendar", [...getters.previousMonth, ...getters.actualMonth, ...getters.nextMonth])
         },
+        dateSelectedCalendar({commit}, dateSelectedCalendar){
+            commit("setDateSelectedCalendar", dateSelectedCalendar)
+        }
     },
     getters: {
         previousMonth(state) {
             let list = [];
-            let currentDate = Vue.prototype.$dayjs(state.dateSelected).set("date", 1);
+            let currentDate = Vue.prototype.$dayjs(state.dateSelectedCalendar).set("date", 1);
             let index = 1;
             for (index; index <= currentDate.weekday(); index++) {
                 let previousDate = currentDate.subtract(index, "day");
@@ -39,7 +46,7 @@ export default {
         },
         actualMonth(state) {
             let list = [];
-            let currentDate = Vue.prototype.$dayjs(state.dateSelected).set("date", 1);
+            let currentDate = Vue.prototype.$dayjs(state.dateSelectedCalendar).set("date", 1);
             for (let index = 0; index < currentDate.daysInMonth(); index++) {
                 let selectedDate = currentDate.add(index, "day");
                 list.push({
@@ -59,9 +66,9 @@ export default {
         },
         nextMonth(state) {
             let list = [];
-            let currentDate = Vue.prototype.$dayjs(state.dateSelected).set(
+            let currentDate = Vue.prototype.$dayjs(state.dateSelectedCalendar).set(
                 "date",
-                Vue.prototype.$dayjs(state.dateSelected).daysInMonth()
+                Vue.prototype.$dayjs(state.dateSelectedCalendar).daysInMonth()
             );
             for (let index = 1; index < 7 - currentDate.weekday(); index++) {
                 let selectedDate = currentDate.add(index, "day");
