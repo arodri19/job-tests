@@ -3,7 +3,7 @@ require('dotenv').config()
 const app = require('./app');
 const port = 3000;
 
-const { InvalidArgumentError,NaoEncontrado } = require('./errors');
+const { InvalidArgumentError,NotFound } = require('./errors');
 
 const routes = require('./routes');
 routes(app);
@@ -14,7 +14,7 @@ app.use((error, req, res, proximo) => {
         mensagem: error.message
     }
 
-    if(error instanceof NaoEncontrado){
+    if(error instanceof NotFound){
         status = 404
     }
     

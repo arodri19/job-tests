@@ -18,8 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     reminder: DataTypes.STRING,
     hourMinuteBegin: DataTypes.TIME,
     hourMinuteEnd: DataTypes.TIME,
-    date: DataTypes.DATE,
-    timestampGMT: DataTypes.BIGINT
+    date: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Reminders',

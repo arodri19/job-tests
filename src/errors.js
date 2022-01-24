@@ -12,11 +12,11 @@ class InternalServerError extends Error {
   }
 }
 
-class NaoEncontrado extends Error{
+class NotFound extends Error{
   constructor(entidade){
-    const mensagem = `Não foi possível encontrar ${entidade}`
+    const mensagem = `${entidade} not found`
     super(mensagem)
-    this.name = 'NaoEncontrado'
+    this.name = 'NotFound'
   }
 }
 
@@ -24,5 +24,5 @@ class NaoEncontrado extends Error{
 module.exports = {
   InvalidArgumentError: InvalidArgumentError,
   InternalServerError: InternalServerError,
-  NaoEncontrado: NaoEncontrado,
+  NotFound: NotFound,
 };
